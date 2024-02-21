@@ -5,6 +5,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 const startBtn = document.querySelector('button');
 const input = document.querySelector('#datetime-picker');
+
 let chosenDate;
 startBtn.disabled = true;
 const options = {
@@ -18,6 +19,7 @@ const options = {
     if (chosenDate - nowDate <= 0) {
       startBtn.disabled = true;
       iziToast.error({
+        theme: 'dark',
         titleColor: '#FFFFFF',
         message: 'Please choose a date in the future',
         backgroundColor: '#B51B1B',
@@ -59,19 +61,17 @@ function handleStartTimer({}) {
   startBtn.disabled = true;
   input.disabled = true;
 
-  const values = document.querySelectorAll('.value');
   const nowDate = new Date();
   let timeDifference = chosenDate - nowDate;
-  const interval = setInterval(() => {
-    const { days, hours, minutes, seconds } = convertMs(timeDifference);
-    values[0].textContent = formatTime(days);
-    values[1].textContent = formatTime(hours);
-    values[2].textContent = formatTime(minutes);
-    values[3].textContent = formatTime(seconds);
-    timeDifference -= 1000;
-    if (seconds == 0) {
-      clearInterval(interval);
-      input.disabled = false;
-    }
-  }, 1000);
+  for (let i = 0; i <= Math.floor(timeDifference / 1000); i++) {
+    setTimeout(() => {
+      const time = convertMs(timeDifference);
+      for (const key in time) {
+        document.querySelector(`[data-${key}]`).textContent = formatTime(
+          time[key]
+        );
+      }
+      timeDifference -= 1000;
+    }, i * 1000);
+  }
 }
