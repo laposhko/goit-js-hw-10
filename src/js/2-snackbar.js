@@ -21,8 +21,9 @@ function handleSubmit(event) {
     setTimeout(() => {
       if (selectedRadioButton == 'fulfilled') {
         resolve(`✅ Fulfilled promise in ${delay} ms`);
+      } else {
+        reject(`❌ Rejected promise in ${delay}ms`);
       }
-      reject(`❌ Rejected promise in ${delay}ms`);
     }, delay);
   });
 
